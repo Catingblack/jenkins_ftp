@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.11-slim'
+            args '--user root'  // Для разрешения установки пакетов
+        }
+    }
     
     parameters {
         string(name: 'SFTP_HOST', defaultValue: '', description: 'SFTP сервер хост')
@@ -18,14 +23,7 @@ pipeline {
 
         stage('Подготовка окружения') {
             steps {
-                script {
-                    // Создаем файл requirements.txt
-                    sh '''
-                    cat > requirements.txt << 'EOF'
-                    paramiko>=2.7.0
-                    EOF
-                    '''
-                    
+                script {                    
                     // Устанавливаем зависимости
                     sh 'pip install -r requirements.txt'
                     
