@@ -9,6 +9,7 @@ pipeline {
     }
     
     environment {
+        PP_NAME = 'my-app'
         // Опционально: можно использовать credentials из Jenkins
         // SFTP_CREDENTIALS = credentials('sftp-credentials')
     }
