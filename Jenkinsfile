@@ -27,16 +27,6 @@ pipeline {
                 '''
             }
         }
-
-        stage('Проверка параметров') {
-            steps {
-                script {
-                    if (!params.SFTP_HOST?.trim() || !params.SFTP_USERNAME?.trim() || !params.SFTP_PASSWORD?.trim()) {
-                        error("Все параметры (хост, логин, пароль) должны быть заполнены")
-                    }
-                }
-            }
-        }
         
         stage('Проверка подключения SFTP') {
             steps {
