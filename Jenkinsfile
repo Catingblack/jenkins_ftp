@@ -28,15 +28,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh '''
-                    source venv/bin/activate
-                    python -c "import paramiko; print('Paramiko version:', paramiko.__version__)"
-                '''
-            }
-        }
-
         stage('Проверка параметров') {
             steps {
                 script {
