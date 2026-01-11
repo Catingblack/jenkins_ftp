@@ -14,6 +14,30 @@ pipeline {
     }
     
     stages {
+
+        stage('Подготовка окружения') {
+            steps {
+                script {
+                    // Создаем файл requirements.txt
+                    sh '''
+                    cat > requirements.txt << 'EOF'
+                    paramiko>=2.7.0
+                    EOF
+                    '''
+                    
+                    // Устанавливаем зависимости
+                    sh 'pip install -r requirements.txt'
+                    
+                    // Альтернативно, для виртуального окружения:
+                    // sh '''
+                    // python3 -m venv venv
+                    // source venv/bin/activate
+                    // pip install -r requirements.txt
+                    // '''
+                }
+            }
+        }
+
         stage('Проверка параметров') {
             steps {
                 script {
