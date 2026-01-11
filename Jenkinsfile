@@ -1,123 +1,25 @@
 pipeline {
-    agent {
-    label 'python-docker'
-    }
-
-    parameters {
-        string(name: 'SFTP_HOST', defaultValue: '', description: 'SFTP сервер хост')
-        string(name: 'SFTP_USERNAME', defaultValue: '', description: 'Логин SFTP')
-        password(name: 'SFTP_PASSWORD', defaultValue: '', description: 'Пароль SFTP')
-        string(name: 'SFTP_PORT', defaultValue: '22', description: 'Порт SFTP')
-    }
-    
-    environment {
-        PP_NAME = 'my-app'
-        // Опционально: можно использовать credentials из Jenkins
-        // SFTP_CREDENTIALS = credentials('sftp-credentials')
-    }
+    agent any
     
     stages {
-
-        stage('Подготовка окружения') {
-            steps {
-                script {                    
-                    // Устанавливаем зависимости
-                    sh 'pip install -r requirements.txt'
-                    
-                    // Альтернативно, для виртуального окружения:
-                    // sh '''
-                    // python3 -m venv venv
-                    // source venv/bin/activate
-                    // pip install -r requirements.txt
-                    // '''
-                }
-            }
-        }
-
-        stage('Проверка параметров') {
+        stage('Check Docker') {
             steps {
                 script {
-                    if (!params.SFTP_HOST?.trim() || !params.SFTP_USERNAME?.trim() || !params.SFTP_PASSWORD?.trim()) {
-                        error("Все параметры (хост, логин, пароль) должны быть заполнены")
+                    // Проверить наличие Docker
+                    def hasDocker = sh(
+                        script: 'which docker || echo "no_docker"',
+                        returnStdout: true
+                    ).trim()
+                    
+                    echo "Docker available: ${hasDocker != 'no_docker'}"
+                    
+                    if (hasDocker != 'no_docker') {
+                        sh 'docker --version'
+                    } else {
+                        error 'Docker not found on this agent!'
                     }
                 }
             }
-        }
-        
-        stage('Проверка подключения SFTP') {
-            steps {
-                script {
-                    def pythonScript = 'sftp_connection_test.py'
-                    
-                    // Выполняем Python скрипт для проверки подключения
-                    sh """
-                    python3 ${pythonScript} \
-                        --host "${params.SFTP_HOST}" \
-                        --port "${params.SFTP_PORT}" \
-                        --username "${params.SFTP_USERNAME}" \
-                        --password "${params.SFTP_PASSWORD}"
-                    """
-                }
-            }
-        }
-        
-        stage('Проверка создания директории') {
-            steps {
-                script {
-                    def pythonScript = 'sftp_create_directory.py'
-                    
-                    sh """
-                    python3 ${pythonScript} \
-                        --host "${params.SFTP_HOST}" \
-                        --port "${params.SFTP_PORT}" \
-                        --username "${params.SFTP_USERNAME}" \
-                        --password "${params.SFTP_PASSWORD}"
-                    """
-                }
-            }
-        }
-        
-        stage('Проверка удаления директории') {
-            steps {
-                script {
-                    def pythonScript = 'sftp_delete_directory.py'
-                    
-                    sh """
-                    python3 ${pythonScript} \
-                        --host "${params.SFTP_HOST}" \
-                        --port "${params.SFTP_PORT}" \
-                        --username "${params.SFTP_USERNAME}" \
-                        --password "${params.SFTP_PASSWORD}"
-                    """
-                }
-            }
-        }
-        
-        stage('Выполнение API метода') {
-            steps {
-                script {
-                    // Пример выполнения API GET запроса
-                    sh """
-                    curl -X GET "https://api.example.com/kek" \
-                         -H "Content-Type: application/json"
-                    """
-                    
-                    // Или с использованием инструментов Jenkins
-                    // httpRequest url: 'https://api.example.com/kek', httpMode: 'GET'
-                }
-            }
-        }
-    }
-    
-    post {
-        success {
-            echo 'Все проверки SFTP выполнены успешно и API метод вызван'
-        }
-        failure {
-            echo 'Произошла ошибка в процессе выполнения'
-        }
-        cleanup {
-            echo 'Очистка завершена'
         }
     }
 }
