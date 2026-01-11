@@ -1,9 +1,9 @@
 pipeline {
 
-    agent any
-
-    tools {
-        python('Python3.9')
+    agent {
+        docker {
+            image 'python:3.9-slim'
+        }
     }
 
     parameters {
@@ -21,15 +21,6 @@ pipeline {
     
     stages {
 
-        stage('Setup Python') {
-            steps {
-                script {
-                    sh 'python --version'
-                    sh 'pip --version'
-                }
-            }
-        }
-        
         stage('Подготовка окружения') {
             steps {
                 script {                    
