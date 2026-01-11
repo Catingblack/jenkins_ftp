@@ -17,19 +17,23 @@ pipeline {
     
     stages {
 
-        stage('Подготовка окружения') {
+        stage('Setup') {
             steps {
-                script {                    
-                    // Устанавливаем зависимости
-                    sh 'pip install -r requirements.txt'
-                    
-                    // Альтернативно, для виртуального окружения:
-                    // sh '''
-                    // python3 -m venv venv
-                    // source venv/bin/activate
-                    // pip install -r requirements.txt
-                    // '''
-                }
+                sh '''
+                    python3 -m venv venv
+                    source venv/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh '''
+                    source venv/bin/activate
+                    python -c "import paramiko; print('Paramiko version:', paramiko.__version__)"
+                '''
             }
         }
 
