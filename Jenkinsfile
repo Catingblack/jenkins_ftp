@@ -1,11 +1,12 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.11-slim'
-            args '--user root'  // Для разрешения установки пакетов
+            image 'python:3.9-slim'
+            label 'docker'
+            args '-v /tmp:/tmp'
         }
     }
-    
+
     parameters {
         string(name: 'SFTP_HOST', defaultValue: '', description: 'SFTP сервер хост')
         string(name: 'SFTP_USERNAME', defaultValue: '', description: 'Логин SFTP')
