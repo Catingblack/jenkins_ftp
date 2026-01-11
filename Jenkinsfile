@@ -1,10 +1,6 @@
 pipeline {
 
-    agent {
-        docker {
-            image 'python:3.9-slim'
-        }
-    }
+    agent any
 
     parameters {
         string(name: 'SFTP_HOST', defaultValue: '', description: 'SFTP сервер хост')
