@@ -35,7 +35,7 @@ pipeline {
                     
                     // Выполняем Python скрипт для проверки подключения
                     sh """
-                    python3 ${pythonScript} \
+                    venv/bin/python ${pythonScript} \
                         --host "${params.SFTP_HOST}" \
                         --port "${params.SFTP_PORT}" \
                         --username "${params.SFTP_USERNAME}" \
