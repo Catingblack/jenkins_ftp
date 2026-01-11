@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     tools {
@@ -20,7 +21,6 @@ pipeline {
     
     stages {
 
-        stages {
         stage('Setup Python') {
             steps {
                 script {
@@ -29,7 +29,7 @@ pipeline {
                 }
             }
         }
-
+        
         stage('Подготовка окружения') {
             steps {
                 script {                    
