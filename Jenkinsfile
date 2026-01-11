@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        python('Python3.9')
+    }
+
     parameters {
         string(name: 'SFTP_HOST', defaultValue: '', description: 'SFTP сервер хост')
         string(name: 'SFTP_USERNAME', defaultValue: '', description: 'Логин SFTP')
@@ -15,6 +19,16 @@ pipeline {
     }
     
     stages {
+
+        stages {
+        stage('Setup Python') {
+            steps {
+                script {
+                    sh 'python --version'
+                    sh 'pip --version'
+                }
+            }
+        }
 
         stage('Подготовка окружения') {
             steps {
