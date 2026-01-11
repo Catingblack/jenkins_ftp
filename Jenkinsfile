@@ -51,7 +51,7 @@ pipeline {
                     def pythonScript = 'sftp_create_directory.py'
                     
                     sh """
-                    python3 ${pythonScript} \
+                    venv/bin/python ${pythonScript} \
                         --host "${params.SFTP_HOST}" \
                         --port "${params.SFTP_PORT}" \
                         --username "${params.SFTP_USERNAME}" \
@@ -67,7 +67,7 @@ pipeline {
                     def pythonScript = 'sftp_delete_directory.py'
                     
                     sh """
-                    python3 ${pythonScript} \
+                    venv/bin/python ${pythonScript} \
                         --host "${params.SFTP_HOST}" \
                         --port "${params.SFTP_PORT}" \
                         --username "${params.SFTP_USERNAME}" \
