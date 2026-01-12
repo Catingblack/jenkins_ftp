@@ -18,7 +18,7 @@ def create_test_directory(host, port, username, password, dir):
         sftp = paramiko.SFTPClient.from_transport(transport)
 
         # Переходим в директорию
-        sftp.chdir(remote_dir)
+        sftp.chdir(dir)
         
         # Создаем директорию
         sftp.mkdir(test_dir_name)
