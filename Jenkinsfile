@@ -93,12 +93,31 @@ pipeline {
             steps {
                 script {
                     withCredentials([
-                        string(credentialsId: 'SERVER_API_TOKEN', variable: 'SERVER_API_TOKEN')
+                        string(credentialsId: 'SERVER_API_TOKEN', variable: 'SERVER_API_TOKEN'),
+                        string(credentialsId: 'COLOR_BLACK_IP', variable: 'BLACK_IP'),
+                        string(credentialsId: 'COLOR_BLUE_IP', variable: 'BLUE_IP'),
+                        string(credentialsId: 'COLOR_GREEN_IP', variable: 'GREEN_IP'),
+                        string(credentialsId: 'COLOR_PINK_IP', variable: 'PINK_IP'),
+                        string(credentialsId: 'COLOR_GOLD_IP', variable: 'GOLD_IP'),
+                        string(credentialsId: 'COLOR_RED_IP', variable: 'RED_IP')
+
                     ]) {
+                        
+                        def colorIpMap = [
+                            'black': BLACK_IP,
+                            'blue': BLUE_IP,
+                            'green': GREEN_IP,
+                            'pink': PINK_IP,
+                            'gold': GOLD_IP,
+                            'red': RED_IP
+                        ]
+
+                        def selectedIp = colorIpMap[params.COLOR]
+
                         sh """
                             chmod +x api_set_sftp.sh
 
-                            export COLOR="${params.COLOR}"
+                            export COLOR="${selectedIp}"
                             export CLIENT_ID="${params.CLIENT_ID}"
                             export SERVER_API_TOKEN="${SERVER_API_TOKEN}"
                             export TENANT_ID="${params.TENANT_ID}"
