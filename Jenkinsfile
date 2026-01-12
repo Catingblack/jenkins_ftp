@@ -109,7 +109,7 @@ pipeline {
                         export FORCE_UTF8_ENABLED="${params.FORCE_UTF8_ENABLED}"
                         export SEND_UTF8_ENABLED="${params.SEND_UTF8_ENABLED}"
                     
-                        ./set.sh
+                        ./api_set_sftp.sh
                     '''
                 }
             }
