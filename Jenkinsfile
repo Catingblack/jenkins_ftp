@@ -90,14 +90,12 @@ pipeline {
                     def additionalParams = input(
                         message: 'Введите параметры для API вызова',
                         parameters: [
-                            string(name: 'API_HOST', description: 'API хост'),
-                            string(name: 'API_PATH', description: 'API путь')
+                            string(name: 'API_HOST', description: 'API хост')
                         ]
                     )
                     
                     // Сохраняем параметры в переменные для использования в следующем этапе
                     env.API_HOST = additionalParams.API_HOST
-                    env.API_PATH = additionalParams.API_PATH
                 }
             }
         }
@@ -109,13 +107,12 @@ pipeline {
             steps {
                 script {
                     // Выполняем API метод с полученными параметрами
-                    echo "Выполнение API метода на хосте: ${env.API_HOST} с путем: ${env.API_PATH}"
+                    echo "Выполнение API метода: ${env.API_HOST}"
                                         
                     // Или можно использовать Python скрипт для API вызова
                     sh """
                         venv/bin/python api_set_sftp.py \
-                            --host "${env.API_HOST}" \
-                            --path "${env.API_PATH}"
+                            --host "${env.API_HOST}"
                     """
                 }
             }

@@ -4,16 +4,15 @@ import requests
 import argparse
 import sys
 
-def call_api(host, path):
+def call_api(host):
     """
     Выполнить простой GET запрос к API
     
     Args:
         host (str): Хост API (например, https://api.example.com)
-        path (str): Путь API (например, /test)
     """
     # Формируем URL
-    url = f"{host.rstrip('/')}/{path.lstrip('/')}"
+    url = f"{host.rstrip('/')}"
     
     print(f"Выполняю запрос к: {url}")
     
@@ -48,12 +47,11 @@ def main():
     # Парсим аргументы
     parser = argparse.ArgumentParser(description='Выполнить API запрос')
     parser.add_argument('--host', required=True, help='Хост API')
-    parser.add_argument('--path', required=True, help='Путь API')
     
     args = parser.parse_args()
     
     # Выполняем запрос
-    call_api(args.host, args.path)
+    call_api(args.host)
 
 if __name__ == '__main__':
     main()
