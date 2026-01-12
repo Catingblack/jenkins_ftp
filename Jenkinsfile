@@ -11,7 +11,7 @@ pipeline {
     }
     
     environment {
-        KEK = ''
+        API_HOST = ''
         // Опционально: можно использовать credentials из Jenkins
         // SFTP_CREDENTIALS = credentials('sftp-credentials')
     }
@@ -95,7 +95,7 @@ pipeline {
                     )
                     
                     // Сохраняем параметры в переменные для использования в следующем этапе
-                    params.API_HOST = additionalParams.API_HOST
+                    env.API_HOST = additionalParams.API_HOST
                 }
             }
         }
@@ -107,12 +107,12 @@ pipeline {
             steps {
                 script {
                     // Выполняем API метод с полученными параметрами
-                    echo "Выполнение API метода на хосте: ${params.API_HOST}"
+                    echo "Выполнение API метода на хосте: ${env.API_HOST}"
                                         
                     // Или можно использовать Python скрипт для API вызова
                     sh """
                         venv/bin/python api_set_sftp.py \
-                            --host "${params.API_HOST}"
+                            --host "${env.API_HOST}"
                     """
                 }
             }
