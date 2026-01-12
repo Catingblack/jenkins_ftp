@@ -12,6 +12,11 @@ pipeline {
         choice(name: 'PROTOCOL', choices: ['SFTP', 'FTPS'], description: 'Выберите протокол')
         string(name: 'TENANT_ID', defaultValue: '', description: 'tenant_id')
         string(name: 'CLIENT_ID', defaultValue: '', description: 'client_id')
+        string(name: 'START_UPLOADING_DATE', defaultValue: '2026-01-12T00:00:00Z', description: 'Дата, с которой будет выгрузка. В формате yyyy-mm-ddTHH:MM:SSZ')
+        booleanParam(name: 'EXEC_PBSZ_ENABLED', defaultValue: true, description: 'EXEC_PBSZ_ENABLED')
+        booleanParam(name: 'LOCAL_PASSIVE_MODE_ENABLED', defaultValue: true, description: 'LOCAL_PASSIVE_MODE_ENABLED')
+        booleanParam(name: 'FORCE_UTF8_CONTROL_ENCODING_ENABLED', defaultValue: true, description: 'FORCE_UTF8_CONTROL_ENCODING_ENABLED')
+        booleanParam(name: 'SEND_OPTION_UTF8_ENABLED', defaultValue: true, description: 'SEND_OPTION_UTF8_ENABLED')
     }
     
     environment {
@@ -80,6 +85,32 @@ pipeline {
                         --password "${params.SFTP_PASSWORD}" \
                         --dir "${params.SFTP_DIR}"
                     """
+                }
+            }
+        }
+
+        stage('Вызов api метода для настройки') {
+            steps {
+                script {
+                    sh '''
+                        export COLOR="${params.COLOR}"
+                        export CLIENT_ID="${params.CLIENT_ID}"
+                        export API_TOKEN="${params.API_TOKEN}"
+                        export TENANT_ID="${params.TENANT_ID}"
+                        export PROTOCOL="${params.PROTOCOL}"
+                        export SFTP_DIR="${params.SFTP_DIR}"
+                        export SFTP_USERNAME="${params.SFTP_USERNAME}"
+                        export SFTP_PASSWORD="${params.SFTP_PASSWORD}"
+                        export SFTP_HOST="${params.SFTP_HOST}"
+                        export SFTP_PORT="${params.SFTP_PORT}"
+                        export START_UPLOADING_DATE="${params.START_UPLOADING_DATE}"
+                        export EXEC_PBSZ_ENABLED="${params.EXEC_PBSZ_ENABLED}"
+                        export LOCAL_PASSIVE_ENABLED="${params.LOCAL_PASSIVE_ENABLED}"
+                        export FORCE_UTF8_ENABLED="${params.FORCE_UTF8_ENABLED}"
+                        export SEND_UTF8_ENABLED="${params.SEND_UTF8_ENABLED}"
+                    
+                        ./set.sh
+                    '''
                 }
             }
         }
