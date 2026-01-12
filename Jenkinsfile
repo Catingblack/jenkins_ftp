@@ -93,7 +93,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([
-                        string(credentialsId: 'SERVER-API-TOKEN', variable: 'SERVER-API-TOKEN')
+                        string(credentialsId: 'SERVER-API-TOKEN', variable: 'SERVER_API_TOKEN')
                     ]) {
                         sh """
                             chmod +x api_set_sftp.sh
