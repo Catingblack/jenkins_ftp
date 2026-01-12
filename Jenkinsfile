@@ -20,7 +20,7 @@ pipeline {
     }
     
     environment {
-        API_HOST = 'kek'
+        KEK = 'kek'
         // Опционально: можно использовать credentials из Jenkins
         // SFTP_CREDENTIALS = credentials('sftp-credentials')
     }
@@ -92,27 +92,31 @@ pipeline {
         stage('Вызов api метода для настройки') {
             steps {
                 script {
-                    sh """
-                        chmod +x api_set_sftp.sh
+                    withCredentials([
+                        string(credentialsId: 'SERVER-API-TOKEN', variable: 'SERVER-API-TOKEN')
+                    ]) {
+                        sh """
+                            chmod +x api_set_sftp.sh
+
+                            export COLOR="${params.COLOR}"
+                            export CLIENT_ID="${params.CLIENT_ID}"
+                            export SERVER_API_TOKEN="${SERVER_API_TOKEN}"
+                            export TENANT_ID="${params.TENANT_ID}"
+                            export PROTOCOL="${params.PROTOCOL}"
+                            export SFTP_DIR="${params.SFTP_DIR}"
+                            export SFTP_USERNAME="${params.SFTP_USERNAME}"
+                            export SFTP_PASSWORD="${params.SFTP_PASSWORD}"
+                            export SFTP_HOST="${params.SFTP_HOST}"
+                            export SFTP_PORT="${params.SFTP_PORT}"
+                            export START_UPLOADING_DATE="${params.START_UPLOADING_DATE}"
+                            export EXEC_PBSZ_ENABLED="${params.EXEC_PBSZ_ENABLED}"
+                            export LOCAL_PASSIVE_ENABLED="${params.LOCAL_PASSIVE_ENABLED}"
+                            export FORCE_UTF8_ENABLED="${params.FORCE_UTF8_ENABLED}"
+                            export SEND_UTF8_ENABLED="${params.SEND_UTF8_ENABLED}"
                         
-                        export COLOR="${params.COLOR}"
-                        export CLIENT_ID="${params.CLIENT_ID}"
-                        export API_TOKEN="${params.API_TOKEN}"
-                        export TENANT_ID="${params.TENANT_ID}"
-                        export PROTOCOL="${params.PROTOCOL}"
-                        export SFTP_DIR="${params.SFTP_DIR}"
-                        export SFTP_USERNAME="${params.SFTP_USERNAME}"
-                        export SFTP_PASSWORD="${params.SFTP_PASSWORD}"
-                        export SFTP_HOST="${params.SFTP_HOST}"
-                        export SFTP_PORT="${params.SFTP_PORT}"
-                        export START_UPLOADING_DATE="${params.START_UPLOADING_DATE}"
-                        export EXEC_PBSZ_ENABLED="${params.EXEC_PBSZ_ENABLED}"
-                        export LOCAL_PASSIVE_ENABLED="${params.LOCAL_PASSIVE_ENABLED}"
-                        export FORCE_UTF8_ENABLED="${params.FORCE_UTF8_ENABLED}"
-                        export SEND_UTF8_ENABLED="${params.SEND_UTF8_ENABLED}"
-                    
-                        ./api_set_sftp.sh
-                    """
+                            ./api_set_sftp.sh
+                        """
+                    }
                 }
             }
         }

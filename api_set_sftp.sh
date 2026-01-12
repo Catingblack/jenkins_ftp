@@ -1,12 +1,14 @@
 #!/bin/bash
 
+set -x
+
 API_URL="${COLOR:-127.0.0.1/internal/api/v1/clients/${CLIENT_ID}/uploadingSettings}"
 API_TOKEN="${API_TOKEN}"
 HOST_HEADER="ekd-ftp-uploader"
 
 # Выполнение запроса
 curl --location "$API_URL" \
---header "Server-Api-Token: Configured $API_TOKEN" \
+--header "Server-Api-Token: Configured $SERVER_API_TOKEN" \
 --header "Content-Type: application/json" \
 --header "Host: $HOST_HEADER" \
 --data-raw "{
