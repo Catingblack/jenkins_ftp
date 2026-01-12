@@ -80,25 +80,11 @@ pipeline {
             }
         }
         
-        stage('Выполнение API метода') {
-            steps {
-                script {
-                    // Пример выполнения API GET запроса
-                    sh """
-                    curl -X GET "https://api.example.com/kek" \
-                         -H "Content-Type: application/json"
-                    """
-                    
-                    // Или с использованием инструментов Jenkins
-                    // httpRequest url: 'https://api.example.com/kek', httpMode: 'GET'
-                }
-            }
-        }
     }
     
     post {
         success {
-            echo 'Все проверки SFTP выполнены успешно и API метод вызван'
+            echo 'Все проверки SFTP выполнены успешно'
         }
         failure {
             echo 'Произошла ошибка в процессе выполнения'
