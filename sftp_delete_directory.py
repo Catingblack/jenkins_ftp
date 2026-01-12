@@ -8,22 +8,13 @@ def delete_test_directory(host, port, username, password, dir):
     """Удаление тестовой директории на SFTP сервере"""
     try:
         print("Удаление тестовой директории...")
-
-        # Переходим в корневую директорию
-        sftp.chdir(dir)
-        
-        # Читаем имя созданной ранее директории
-        if not os.path.exists('test_directory.txt'):
-            print("✗ Файл с именем тестовой директории не найден")
-            sys.exit(1)
-        
-        with open('test_directory.txt', 'r') as f:
-            test_dir_name = f.read().strip()
         
         transport = paramiko.Transport((host, int(port)))
         transport.connect(username=username, password=password)
         sftp = paramiko.SFTPClient.from_transport(transport)
 
+        # Переходим в корневую директорию
+        sftp.chdir(dir)
         
         # Получаем список всех элементов в текущей директории
         items = sftp.listdir('.')
