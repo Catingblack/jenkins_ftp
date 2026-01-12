@@ -8,8 +8,17 @@ pipeline {
         password(name: 'SFTP_PASSWORD', defaultValue: '', description: 'Пароль SFTP')
         string(name: 'SFTP_PORT', defaultValue: '22', description: 'Порт SFTP')
         string(name: 'SFTP_DIR', defaultValue: '/', description: 'Директория SFTP')
+        choice(name: 'COLOR', choices: ['black', 'red', 'blue', 'green', 'pink', 'gold'], description: 'Выберите цвет инстанса')
+        choice(name: 'PROTOCOL', choices: ['SFTP', 'FTPS'], description: 'Выберите протокол')
+        extendedChoice(name: 'tenant_id', type: 'PT_TEXTBOX', description: 'tenant_id', defaultValue: '', regex: '.+')
+        extendedChoice(name: 'client_id', type: 'PT_TEXTBOX', description: 'client_id', defaultValue: '', regex: '.+')
     }
     
+    environment {
+        API_HOST = 'kek'
+        // Опционально: можно использовать credentials из Jenkins
+        // SFTP_CREDENTIALS = credentials('sftp-credentials')
+    }
     
     stages {
 
@@ -70,46 +79,6 @@ pipeline {
                         --username "${params.SFTP_USERNAME}" \
                         --password "${params.SFTP_PASSWORD}" \
                         --dir "${params.SFTP_DIR}"
-                    """
-                }
-            }
-        }
-
-        stage('Запрос дополнительных параметров') {
-            when {
-                expression { return currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-            }
-            steps {
-                script {
-                    // Используем input для запроса дополнительных параметров
-                    def additionalParams = input(
-                        message: 'Введите параметры для API вызова',
-                        parameters: [
-                            string(name: 'API_HOST', description: 'API хост')
-                        ]
-                    )
-                    
-                    // Сохраняем параметры в переменные для использования в следующем этапе
-                    env.API_HOST = additionalParams.API_HOST
-
-                    echo "API_HOST установлен: ${env.API_HOST}"
-                }
-            }
-        }
-
-        stage('Выполнение API метода') {
-            when {
-                expression { return currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-            }
-            steps {
-                script {
-                    // Выполняем API метод с полученными параметрами
-                    echo "Выполнение API метода на хосте: ${env.API_HOST}"
-                                        
-                    // Или можно использовать Python скрипт для API вызова
-                    sh """
-                        venv/bin/python api_set_sftp.py \
-                            --host "${env.API_HOST}"
                     """
                 }
             }
