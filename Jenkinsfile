@@ -93,9 +93,6 @@ pipeline {
                             string(name: 'API_HOST', description: 'API хост')
                         ]
                     )
-                    
-                    // Сохраняем параметры в переменные для использования в следующем этапе
-                    env.API_HOST = additionalParams.API_HOST
                 }
             }
         }
@@ -107,12 +104,12 @@ pipeline {
             steps {
                 script {
                     // Выполняем API метод с полученными параметрами
-                    echo "Выполнение API метода: ${env.API_HOST}"
+                    echo "Выполнение API метода: ${params.API_HOST}"
                                         
                     // Или можно использовать Python скрипт для API вызова
                     sh """
                         venv/bin/python api_set_sftp.py \
-                            --host "${env.API_HOST}"
+                            --host "${params.API_HOST}"
                     """
                 }
             }
