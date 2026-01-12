@@ -113,7 +113,7 @@ pipeline {
                                         
                     // Или можно использовать Python скрипт для API вызова
                     sh """
-                        venv/bin/api_set_sftp.py \
+                        venv/bin/python api_set_sftp.py \
                             --host "${env.API_HOST}" \
                             --path "${env.API_PATH}"
                     """
