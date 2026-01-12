@@ -10,11 +10,6 @@ pipeline {
         string(name: 'SFTP_DIR', defaultValue: '/', description: 'Директория SFTP')
     }
     
-    environment {
-        API_HOST = 'kek'
-        // Опционально: можно использовать credentials из Jenkins
-        // SFTP_CREDENTIALS = credentials('sftp-credentials')
-    }
     
     stages {
 
