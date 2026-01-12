@@ -79,6 +79,47 @@ pipeline {
                 }
             }
         }
+
+        stage('Запрос дополнительных параметров') {
+            when {
+                expression { return currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                script {
+                    // Используем input для запроса дополнительных параметров
+                    def additionalParams = input(
+                        message: 'Введите параметры для API вызова',
+                        parameters: [
+                            string(name: 'API_HOST', description: 'API хост'),
+                            string(name: 'API_PATH', description: 'API путь')
+                        ]
+                    )
+                    
+                    // Сохраняем параметры в переменные для использования в следующем этапе
+                    env.API_HOST = additionalParams.API_HOST
+                    env.API_PATH = additionalParams.API_PATH
+                }
+            }
+        }
+
+        stage('Выполнение API метода') {
+            when {
+                expression { return currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                script {
+                    // Выполняем API метод с полученными параметрами
+                    echo "Выполнение API метода на хосте: ${env.API_HOST} с путем: ${env.API_PATH}"
+                                        
+                    // Или можно использовать Python скрипт для API вызова
+                    sh """
+                        venv/bin/api_set_sftp.py \
+                            --host "${env.API_HOST}" \
+                            --path "${env.API_PATH}"
+                    """
+                }
+            }
+        }
         
     }
     
