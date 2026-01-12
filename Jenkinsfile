@@ -92,7 +92,7 @@ pipeline {
         stage('Вызов api метода для настройки') {
             steps {
                 script {
-                    sh '''
+                    sh """
                         export COLOR="${params.COLOR}"
                         export CLIENT_ID="${params.CLIENT_ID}"
                         export API_TOKEN="${params.API_TOKEN}"
@@ -110,7 +110,7 @@ pipeline {
                         export SEND_UTF8_ENABLED="${params.SEND_UTF8_ENABLED}"
                     
                         ./api_set_sftp.sh
-                    '''
+                    """
                 }
             }
         }
