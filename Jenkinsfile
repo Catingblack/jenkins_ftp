@@ -93,6 +93,8 @@ pipeline {
             steps {
                 script {
                     sh """
+                        chmod +x api_set_sftp.sh
+                        
                         export COLOR="${params.COLOR}"
                         export CLIENT_ID="${params.CLIENT_ID}"
                         export API_TOKEN="${params.API_TOKEN}"
