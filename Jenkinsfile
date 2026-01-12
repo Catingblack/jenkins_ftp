@@ -11,7 +11,7 @@ pipeline {
     }
     
     environment {
-        API_HOST = ''
+        KEK = ''
         // Опционально: можно использовать credentials из Jenkins
         // SFTP_CREDENTIALS = credentials('sftp-credentials')
     }
@@ -96,6 +96,8 @@ pipeline {
                     
                     // Сохраняем параметры в переменные для использования в следующем этапе
                     env.API_HOST = additionalParams.API_HOST
+
+                    echo "API_HOST установлен: ${env.API_HOST}"
                 }
             }
         }
