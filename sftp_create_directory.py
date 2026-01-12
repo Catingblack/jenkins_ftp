@@ -11,13 +11,13 @@ def create_test_directory(host, port, username, password, dir):
         print("Создание тестовой директории...")
         
         # Генерируем уникальное имя директории
-        test_dir_name = f"jenkins_test_{uuid.uuid4().hex[:8]}_{int(time.time())}"
+        test_dir_name = f"sftp_test_{uuid.uuid4().hex[:8]}_{int(time.time())}"
         
         transport = paramiko.Transport((host, int(port)))
         transport.connect(username=username, password=password)
         sftp = paramiko.SFTPClient.from_transport(transport)
 
-        # Переходим в директорию
+        # Переходим в корневую директорию
         sftp.chdir(dir)
         
         # Создаем директорию
