@@ -73,7 +73,7 @@ pipeline {
                         --host "${params.SFTP_HOST}" \
                         --port "${params.SFTP_PORT}" \
                         --username "${params.SFTP_USERNAME}" \
-                        --password "${params.SFTP_PASSWORD}"
+                        --password "${params.SFTP_PASSWORD}" \
                         --dir "${params.SFTP_DIR}"
                     """
                 }
