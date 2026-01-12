@@ -10,8 +10,8 @@ pipeline {
         string(name: 'SFTP_DIR', defaultValue: '/', description: 'Директория SFTP')
         choice(name: 'COLOR', choices: ['black', 'red', 'blue', 'green', 'pink', 'gold'], description: 'Выберите цвет инстанса')
         choice(name: 'PROTOCOL', choices: ['SFTP', 'FTPS'], description: 'Выберите протокол')
-        extendedChoice(name: 'tenant_id', type: 'PT_TEXTBOX', description: 'tenant_id', defaultValue: '', regex: '.+')
-        extendedChoice(name: 'client_id', type: 'PT_TEXTBOX', description: 'client_id', defaultValue: '', regex: '.+')
+        string(name: 'TENANT_ID', defaultValue: '', description: 'tenant_id')
+        string(name: 'CLIENT_ID', defaultValue: '', description: 'client_id')
     }
     
     environment {
