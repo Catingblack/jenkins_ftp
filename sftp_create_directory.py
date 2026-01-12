@@ -5,7 +5,7 @@ import sys
 import uuid
 import time
 
-def create_test_directory(host, port, username, password):
+def create_test_directory(host, port, username, password, dir):
     """Создание тестовой директории на SFTP сервере"""
     try:
         print("Создание тестовой директории...")
@@ -16,6 +16,9 @@ def create_test_directory(host, port, username, password):
         transport = paramiko.Transport((host, int(port)))
         transport.connect(username=username, password=password)
         sftp = paramiko.SFTPClient.from_transport(transport)
+
+        # Переходим в директорию
+        sftp.chdir(remote_dir)
         
         # Создаем директорию
         sftp.mkdir(test_dir_name)
@@ -40,10 +43,11 @@ def main():
     parser.add_argument('--port', default=22, help='SFTP порт')
     parser.add_argument('--username', required=True, help='Имя пользователя SFTP')
     parser.add_argument('--password', required=True, help='Пароль SFTP')
+    parser.add_argument('--dir', required=True, help='Директория SFTP')
     
     args = parser.parse_args()
     
-    create_test_directory(args.host, args.port, args.username, args.password)
+    create_test_directory(args.host, args.port, args.username, args.password, args.dir)
 
 if __name__ == "__main__":
     main()

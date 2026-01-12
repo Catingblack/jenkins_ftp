@@ -7,6 +7,7 @@ pipeline {
         string(name: 'SFTP_USERNAME', defaultValue: '', description: 'Логин SFTP')
         password(name: 'SFTP_PASSWORD', defaultValue: '', description: 'Пароль SFTP')
         string(name: 'SFTP_PORT', defaultValue: '22', description: 'Порт SFTP')
+        string(name: 'SFTP_DIR', defaultValue: '/', description: 'Директория SFTP')
     }
     
     environment {
@@ -55,7 +56,8 @@ pipeline {
                         --host "${params.SFTP_HOST}" \
                         --port "${params.SFTP_PORT}" \
                         --username "${params.SFTP_USERNAME}" \
-                        --password "${params.SFTP_PASSWORD}"
+                        --password "${params.SFTP_PASSWORD}" \
+                        --dir "${params.SFTP_DIR}"
                     """
                 }
             }
@@ -72,6 +74,7 @@ pipeline {
                         --port "${params.SFTP_PORT}" \
                         --username "${params.SFTP_USERNAME}" \
                         --password "${params.SFTP_PASSWORD}"
+                        --dir "${params.SFTP_DIR}"
                     """
                 }
             }
