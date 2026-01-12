@@ -11,7 +11,7 @@ pipeline {
     }
     
     environment {
-        KEK = 'kek'
+        API_HOST = 'kek'
         // Опционально: можно использовать credentials из Jenkins
         // SFTP_CREDENTIALS = credentials('sftp-credentials')
     }
